@@ -8,17 +8,17 @@ Your project must include a **user-facing interface** through the command line. 
 
 ### Mandatory Features  
 Your project must incorporate the following:  
-- **Abstract classes or interfaces**  
-- **5 unit tests**  
-- **Functional programming techniques** (e.g., `streams`, `map`, `filter`)  
-- **At least one third-party package** (excluding JUnit)  
+- **Abstract classes or interfaces**  --> interfaces not done
+- **5 unit tests**  ---> not yet done
+- **Functional programming techniques** (e.g., `streams`, `map`, `filter`)  ----> moderately done
+- **At least one third-party package** (excluding JUnit)  ----> make use of object mapper and jackson
 - **Optimized time complexity** (consider **Big O Notation** where applicable)  
-- **Built using either Maven or Gradle**  
+- **Built using either Maven or Gradle**  ---> MAVEN USED
 
 ### Nice-to-Have Features  
 These features are optional but will enhance your project:  
-- **Reading and writing to a file** (for data persistence)  
-- **Logging**  
+- **Reading and writing to a file** (for data persistence)  --->not done
+- **Logging**  ---> not done
 - **Additional unit tests**  
 - **Integration with a third-party API**  
 - **Multi-dimensional arrays**  
