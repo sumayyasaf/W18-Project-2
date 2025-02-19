@@ -1,8 +1,13 @@
 package com.example.app.service;
 
+import com.example.app.impl.RoomServiceImpl;
+import com.example.app.model.Admin;
+import com.example.app.model.Room;
+import com.example.app.model.Student;
 import com.example.app.model.User;
 import com.google.gson.*;
 
+import javax.management.relation.Role;
 import java.io.IOException;
 
 import java.net.*;
@@ -11,16 +16,17 @@ import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class UserDB {
 
     List<User> currentUsersInApp = new ArrayList<>();
+    RoomServiceImpl roomServiceImpl;
 
     public UserDB() {
+        this.roomServiceImpl = new RoomServiceImpl(new RoomDB());
+
         fetchUsers();
     }
     public void fetchUsers() {
@@ -49,7 +55,6 @@ public class UserDB {
                 JsonObject userJson = element.getAsJsonObject();
 
                 int id = userJson.get("id").getAsInt();
-//                String name = userJson.get("name").getAsString();
                 String userName = userJson.get("username").getAsString();
                 String gender = userJson.get("gender").getAsString();
                 String email = userJson.get("email").getAsString();
@@ -60,12 +65,19 @@ public class UserDB {
 
                 if(!role.equals("admin")) {
                     role = "student";
+                    Random num = new Random();
+
+                    Room roomObj = roomServiceImpl.getRoomById(num.nextInt(9)).orElse(new Room(num.nextInt(9), 15, 13));
+                    Student studentObj = new Student(id,userName,gender,age,phone,role,email,password,num.nextInt(9),roomObj,"Java",num.nextBoolean());
+                    currentUsersInApp.add(studentObj);
+                } else {
+                    Admin adminObj = new Admin(role,userName, password, phone, age, gender,id,"warden");
+                    currentUsersInApp.add(adminObj);
+
+//                User userA = new Student(id,userName,gender,age,phone,role,userName,password);
+//                currentUsersInApp.add(userA);
                 }
 
-
-                //Create a user Object
-                User userA = new User(id,userName,gender,age,phone,role,email,password);
-                currentUsersInApp.add(userA);
 
             }
 
@@ -79,7 +91,13 @@ public class UserDB {
 
     }
         public List<User> getUsers () {
-            return currentUsersInApp;
+            return currentUsersInApp.stream()
+                    .filter(user -> !"admin".equalsIgnoreCase(user.getRole()))
+                    .map(user -> {
+                        System.out.println("user id: " + user.getId() + "-Name: " + user.getUserName());
+                        return user;
+                    })
+                    .collect(Collectors.toList());
         }
 
         public User getUserById ( int id){
@@ -92,7 +110,7 @@ public class UserDB {
         public User getUserByUsername (String username){
 
             return currentUsersInApp.stream()
-                    .filter(usr -> Objects.equals(usr.getName(), username))
+                    .filter(usr -> Objects.equals(usr.getUserName(), username))
                     .findFirst().orElse(null);
         }
 
@@ -112,6 +130,10 @@ public class UserDB {
 
         public boolean delUserByUsername (String username){
             User usr = getUserByUsername(username);
+            if (usr == null) {
+                System.out.println("User does not exist in system");
+                return false;
+            }
             delUser(usr.getId());
             return true;
         }

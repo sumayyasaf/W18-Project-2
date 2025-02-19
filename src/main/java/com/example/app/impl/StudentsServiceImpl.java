@@ -1,5 +1,6 @@
 package com.example.app.impl;
 
+import com.example.app.HostelManagement;
 import com.example.app.model.Student;
 import com.example.app.model.User;
 import com.example.app.service.RoomDB;
@@ -39,13 +40,19 @@ public class StudentsServiceImpl implements UserService {
 
     @Override
     public User authenticateUser(String username,  String password){
-        logger.info("started authenticateUser");
-        User user = userDB.getUserByUsername(username);
-        if(user.getPassword().equals(password)){
-            return user;
-        }
-        logger.info("User is not authenticated");
-        return null;
+       logger.info("Started authenticateUser for username: " + username);
+       User user = userDB.getUserByUsername(username);
+       if(user == null) {
+           logger.warning("User with username: " + username + " not found");
+           return null;
+       }
+       if(user.getPassword().equals(password)) {
+           logger.info("User authenticated successfully");
+           return user;
+       } else {
+           logger.warning("User authenticated failed");
+           return null;
+       }
     }
 
     @Override
@@ -68,29 +75,22 @@ public class StudentsServiceImpl implements UserService {
                     break;
                     case 2:
                         //Fetch student details and show assigned room
-                        System.out.println("Enter student id: ");
-                        int studentId = scanner.nextInt();
-                        scanner.nextLine();
-                        User user = userDB.getUserById(studentId);
+                        User user = HostelManagement.CURRENT_USER;
                         if(user == null) {
-                            logger.warning("User with id: " + studentId + " not found");
+                            logger.warning("No user found");
                         } else {
                             Student student = (Student) user;
                             int assignedRoom = student.getRoomNumber();
-                            if(assignedRoom == -1) {
+                            if(assignedRoom == 0) {
                                 System.out.println("You are not assigned to this room yet");
                             } else {
-                                System.out.println("You are assigned to this room" + assignedRoom);
-                            }
+                                System.out.println("You are assigned to this room " + student.getRoomAssigned());                            }
                         }
                         break;
                         case 3:
-                            System.out.println("Enter student id: ");
-                            int id = scanner.nextInt();
-                            scanner.nextLine();
-                            User studentUser = userDB.getUserById(id);
+                            User studentUser = HostelManagement.CURRENT_USER;
                             if(studentUser == null) {
-                                logger.warning("User with id: " + id + " not found");
+                                System.out.println("User not found");
                             } else {
                                 Student student = (Student) studentUser;
                                 if(student.isFeePaid()) {

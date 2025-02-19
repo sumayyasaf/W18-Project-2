@@ -57,7 +57,7 @@ import java.util.logging.Logger;
             if(roomToAssign.getOccupants() < roomToAssign.getCapacity()){
                 roomToAssign.setOccupants(roomToAssign.getOccupants() + 1);
                 student.setRoomNumber(roomToAssign.getId());
-                logger.info("Room assigned to student: " + student.getName() + "-> Room" + roomToAssign.getId());
+                logger.info("Room assigned to student: " + student.getUserName() + "-> Room" + roomToAssign.getId());
                 return true;
             }
 

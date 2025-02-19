@@ -12,11 +12,15 @@ public class RoomDB {
 
     public RoomDB() {
         this.rooms = new ArrayList<>();
-        new Room(0,3,2);
         this.rooms.add(new Room(1,2,3));
         this.rooms.add(new Room(2,0,4));
         this.rooms.add(new Room(3,8,2));
         this.rooms.add(new Room(4,4,3));
+        this.rooms.add(new Room(5,7,3));
+        this.rooms.add(new Room(6,2,2));
+        this.rooms.add(new Room(7,4,4));
+        this.rooms.add(new Room(8,4,3));
+        this.rooms.add(new Room(9,5,3));
     }
    public void addRoom(Room room) {
         rooms.add(room);

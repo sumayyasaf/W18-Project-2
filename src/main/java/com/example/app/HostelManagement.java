@@ -18,7 +18,7 @@ public class HostelManagement {
     UserService userService;
     AdminServiceImpl adminService;
     StudentsServiceImpl studentsService;
-    User currentUser;
+    public static User CURRENT_USER;
     private static final Logger logger = Logger.getLogger(HostelManagement.class.getName());
 
     public HostelManagement() throws URISyntaxException, IOException, InterruptedException {
@@ -44,10 +44,10 @@ public class HostelManagement {
             switch (choice) {
                 case 1:
                     System.out.print("Enter Admin Username: ");
-                    String adminUsername = scanner.next();  // ✅ Read username correctly
+                    String adminUsername = scanner.next();  //
                     System.out.print("Enter Admin Password: ");
-                    String adminPassword = scanner.next();  // ✅ Read password correctly
-                    this.currentUser = adminService.authenticateUser(adminUsername, adminPassword);
+                    String adminPassword = scanner.next();  //
+                    this.CURRENT_USER = adminService.authenticateUser(adminUsername, adminPassword);
                     break;
 
                 case 2:
@@ -55,7 +55,7 @@ public class HostelManagement {
                     String studentUsername = scanner.next();
                     System.out.print("Enter Student Password: ");
                     String studentPassword = scanner.next();
-                    this.currentUser = studentsService.authenticateUser(studentUsername, studentPassword);
+                    this.CURRENT_USER = studentsService.authenticateUser(studentUsername, studentPassword);
                     break;
                 case 3:
                     aboutDciHostel();
@@ -65,9 +65,10 @@ public class HostelManagement {
                     return;
                 default:
                     System.out.println("Invalid choice! Try again.");
+                    break;
             }
-           if (this.currentUser != null) {
-               this.userService = this.currentUser.getUserService(); //service: studentService/admin service
+           if (this.CURRENT_USER != null) {
+               this.userService = this.CURRENT_USER.getUserService(); //service: studentService/admin service
                 this.userService.userScreen();
            }
 
@@ -76,7 +77,7 @@ public class HostelManagement {
 
 
     public void aboutDciHostel() {
-        System.out.println("DCI Hostel provides a safe, comfortable, and well-maintained living environment for students. \n The hostel is designed to offer a home-like atmosphere while ensuring discipline and academic focus.\n Spacious and well-furnished rooms with single, double, and shared occupancy options.Quiet and well-lit study rooms to facilitate learning and concentration.\n Our Hostel ensures that students have a comfortable and supportive living experience while focusing on their studies\n");
+        System.out.println("\033[36m DCI Hostel provides a safe, comfortable, and well-maintained living environment for students. \n The hostel is designed to offer a home-like atmosphere while ensuring discipline and academic focus.\n Spacious and well-furnished rooms with single, double, and shared occupancy options.Quiet and well-lit study rooms to facilitate learning and concentration.\n Our Hostel ensures that students have a comfortable and supportive living experience while focusing on their studies.\033[0m\n");
     }
 
     public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
@@ -87,8 +88,6 @@ public class HostelManagement {
 
     }
 }
-
-
 
 
 

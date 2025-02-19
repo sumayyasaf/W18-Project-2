@@ -74,7 +74,7 @@ public class AdminServiceImpl implements UserService {
          Student student = (Student) user;
          boolean assigned = roomServiceImpl.assignRoomToStudent(roomId, student);
          if(assigned) {
-             System.out.println("Room" + roomId + " assigned to student: " + student.getName());
+             System.out.println("Room" + roomId + " assigned to student: " + student.getUserName());
          } else
              System.out.println("Room assignment failed: No available space in Room " + roomId);
          }
@@ -109,12 +109,8 @@ public class AdminServiceImpl implements UserService {
                     scanner.nextLine();
                     System.out.println("Has the student paid fees?(Y/N): "  );
                     boolean isFeePaid = scanner.nextLine().equalsIgnoreCase("y");
-
-
-                    //get username from userid using userdb...
-
-                    Student student = new Student();
-                    student.setName(studentName);
+                    Student student = new Student(1,"userName","N/A",2,"phone","role","email","password",0,null,"course",false);
+                    student.setUserName(studentName);
                     student.setCourse(courseName);
                     student.setFeePaid(isFeePaid);
                     if(userDB.addUser(student)) {
@@ -131,10 +127,11 @@ public class AdminServiceImpl implements UserService {
                     break;
                 case 3:
                     System.out.println("Enter student Id to assign room: ");
-                    int studentId = scanner.nextInt();
+                     int studentId = scanner.nextInt();
                     System.out.println("Enter room Id to view: ");
                     int roomId = scanner.nextInt();
                     assignRoom(studentId,roomId);
+                    System.out.println("roomId: " + roomId + "  has been assigned to the student with studentId " + studentId);
 
                     break;
                 case 4:
